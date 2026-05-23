@@ -308,6 +308,8 @@ This project demonstrates:
 ## 📄 License
 
 This project was developed for educational purposes as part of a Kocaeli University Software Laboratory project.
+
+
 Here are some Screenshots from the website:
 <img width="1920" height="1024" alt="Screenshot (99)" src="https://github.com/user-attachments/assets/3ca60ffc-3d62-438c-b87f-58beb330fca1" />
 <img width="1920" height="1022" alt="Screenshot (98)" src="https://github.com/user-attachments/assets/a85c7110-14a9-4f53-bebe-4287d1b11fb4" />
