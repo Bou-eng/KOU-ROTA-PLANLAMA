@@ -1,5 +1,116 @@
-📦 KOÜ Cargo Route Planning & Optimization System
+🚚 Kocaeli Cargo Route Optimizer
+Full-stack logistics optimization system — KOÜ Software Laboratory Project
 
+https://img.shields.io/badge/Python-3.x-blue
+https://img.shields.io/badge/FastAPI-0.x-009688
+https://img.shields.io/badge/Next.js-16-black
+https://img.shields.io/badge/TypeScript-5.x-3178C6
+https://img.shields.io/badge/PostgreSQL-15-4169E1
+
+Optimizes cargo delivery across 12 districts of Kocaeli, minimizing distance and cost using Dijkstra-based graph algorithms and route planning heuristics.
+
+✨ Features
+Feature	Description
+📦 Cargo Requests	Users submit deliveries with destination, weight, count & date
+🧠 Smart Optimization	Two modes — unlimited vehicles (min cost) or fixed 3 vehicles (max cargo)
+🗺️ Graph Routing	Dijkstra-powered shortest paths with DB-cached results
+📊 Interactive Maps	Leaflet + OpenStreetMap visualization of assigned routes
+🔐 Role-Based Access	JWT auth with USER/ADMIN roles
+🏗️ Tech Stack
+Layer	Technology
+Backend	FastAPI • PostgreSQL • SQLAlchemy • Pydantic
+Frontend	Next.js 16 • React • TypeScript • Tailwind CSS • Leaflet
+Algorithms	Dijkstra • Distance Matrix • Route Optimization
+Package Manager	pnpm
+👥 Roles
+Role	Capabilities
+USER	Create cargo requests • Track status • View assigned routes on map
+ADMIN	Manage stations & road connections • Run optimizations • View planning history & costs
+🔑 Test Accounts
+Role	Email	Password
+Admin	admin@kocaeli.edu.tr	Admin123
+User	user1@kocaeli.edu.tr	123456
+🚀 Quick Start (Windows / PowerShell)
+Prerequisites
+PostgreSQL running locally
+
+Python 3.x + Node.js 18+
+
+1. Allow Script Execution
+powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+2. Install pnpm
+powershell
+npm install -g pnpm
+3. Setup Backend
+powershell
+cd ".\KOÜ ROTA PLANLAMA\apps\api"
+.\venv\Scripts\activate
+pip install -r requirements.txt
+4. Setup Frontend
+powershell
+cd ".\KOÜ ROTA PLANLAMA\apps\web"
+pnpm install
+5. Launch
+Service	Command (separate terminals)	URL
+Backend	uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload	http://127.0.0.1:8000/health
+Frontend	pnpm dev	http://localhost:3000
+⚠️ Admin must configure stations, edges & center before running planning. Users only see routes after planning executes.
+
+🗺️ Planning Modes
+Mode	Behavior
+UNLIMITED_MIN_COST	Unlimited vehicles • Pure cost minimization
+FIXED_3_MAX_CARGO	Exactly 3 vehicles • Maximize delivered cargo volume
+📊 Database Core
+Table	Purpose
+users	Authentication & roles
+stations	District-based delivery points (lat/lon, active, center flag)
+cargo_requests	User deliveries with status tracking
+station_edges	Road connections with distances
+station_paths_cache	Precomputed Dijkstra shortest paths
+plans	Optimization run history
+🔌 API Summary
+33 endpoints across:
+
+Prefix	Purpose
+/auth/*	JWT authentication
+/stations	Public station data
+/admin/stations	Station management
+/requests	User cargo requests
+/admin/demands	Admin request management
+/graph/*	Graph & shortest paths
+/planning/*	Optimization execution
+/user/route	Assigned route visualization
+/health	Health check
+🔐 Security
+JWT authentication with role-based access
+
+Password hashing (bcrypt)
+
+CORS configuration
+
+SQL injection protection (ORM)
+
+Pydantic input validation
+
+⚡ Performance
+DB-cached shortest paths
+
+Distance matrix precomputation
+
+Active station filtering
+
+Indexed columns & connection pooling
+
+⚙️ Environment Variables
+env
+DATABASE_URL=postgresql+psycopg2://yazlab3_app:123456@localhost:5432/yazlab3_new
+JWT_SECRET=123456
+CORS_ORIGINS=http://localhost:3000,http://192.168.56.1:3000
+API_HOST=0.0.0.0
+API_PORT=8000
+🎓 Learning Outcomes
+Full-stack development • REST API design • Graph algorithms • Route optimization • Database modeling • Auth & authorization • Map-based visualization • Real-world logistics
 
 
 Here are some Screenshots from the website:
