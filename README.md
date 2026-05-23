@@ -1,161 +1,313 @@
-<div align="center">
-🚚 Kocaeli Cargo Route Optimizer
-Full‑stack logistics optimization system
-Kocaeli University Software Laboratory Project
+# 🚚 KOÜ Cargo Route Planning & Optimization
 
-https://img.shields.io/badge/Python-3.x-3776AB?style=flat&logo=python&logoColor=white
-https://img.shields.io/badge/FastAPI-0.x-009688?style=flat&logo=fastapi&logoColor=white
-https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=next.js&logoColor=white
-https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white
-https://img.shields.io/badge/PostgreSQL-15-4169E1?style=flat&logo=postgresql&logoColor=white
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=for-the-badge&logo=fastapi)
+![Next.js](https://img.shields.io/badge/Next.js-Frontend-000000?style=for-the-badge&logo=nextdotjs)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql)
+![TypeScript](https://img.shields.io/badge/TypeScript-React-3178C6?style=for-the-badge&logo=typescript)
+![Leaflet](https://img.shields.io/badge/Leaflet-Maps-199900?style=for-the-badge&logo=leaflet)
 
-Optimizes cargo delivery across the 12 districts of Kocaeli – minimizing distance and cost with graph algorithms and route‑planning heuristics.
+A full-stack **cargo route planning and optimization system** developed as a **Kocaeli University Software Laboratory project**.
 
-</div>
-📑 Table of Contents
-✨ Features
+The system optimizes cargo deliveries across the **12 districts of Kocaeli** by minimizing route distance and delivery cost using graph algorithms, shortest-path calculations, and route planning heuristics.
 
-🏗️ Architecture
+---
 
-👥 Roles & Test Accounts
+## 📌 Overview
 
-🚀 Quick Start
+This project helps manage and optimize cargo delivery operations by:
 
-🧠 Planning Modes
+- Collecting cargo requests from users
+- Grouping deliveries by target date
+- Computing shortest paths between districts
+- Assigning cargo to vehicles with capacity and cost constraints
+- Visualizing optimized routes on interactive maps
 
-🗄️ Database Schema
+It is designed as an educational but production-like logistics system.
 
-🔌 API Overview
+---
 
-🔐 Security & ⚡ Performance
+## 🏗️ Tech Stack
 
-⚙️ Environment Variables
+| Layer | Technology |
+|---|---|
+| Backend | FastAPI, Python |
+| Frontend | Next.js 16, React, TypeScript |
+| Database | PostgreSQL |
+| ORM | SQLAlchemy |
+| Styling | Tailwind CSS |
+| Maps | Leaflet, OpenStreetMap |
+| Package Manager | pnpm |
+| Algorithms | Dijkstra, Distance Matrix, Route Optimization |
 
-🎓 Learning Outcomes
+---
 
-✨ Features
-🧩 Category	Details
-Cargo Requests	Users submit deliveries with destination, weight, count, and date
-Smart Optimization	Two modes – unlimited vehicles (min cost) or exactly 3 vehicles (max cargo)
-Graph‑Based Routing	Dijkstra shortest paths cached in DB for instant look‑ups
-Interactive Maps	Leaflet + OpenStreetMap showing assigned routes and delivery order
-Role‑Based Access	JWT authentication with USER and ADMIN roles
-Full History	Admins can review all planning runs, costs, and cargo statistics
-🏗️ Architecture
+## 🧠 System Architecture
 
+```mermaid
+flowchart LR
+    User[User / Admin] --> Web[Next.js Frontend]
+    Web --> API[FastAPI Backend]
+    API --> DB[(PostgreSQL)]
+    API --> Algorithms[Route Optimization Engine]
+    Algorithms --> Graph[Station Graph]
+    Web --> Maps[Leaflet + OpenStreetMap]
+```
 
+---
 
+## 👥 User Roles
 
+| Role | Permissions |
+|---|---|
+| **USER** | Create cargo requests, view request status, view assigned routes on map |
+| **ADMIN** | Manage stations, roads, cargo requests, planning runs, and optimization results |
 
+---
 
+## 🔑 Default Test Accounts
 
-Layer	Stack
-Frontend	Next.js 16 · React · TypeScript · Tailwind CSS · Leaflet · pnpm
-Backend	FastAPI (port 8000) · SQLAlchemy · Pydantic · Uvicorn
-Algorithms	Dijkstra · Distance Matrix · Two‑stage route optimization
-Database	PostgreSQL with pre‑computed path caching
-👥 Roles & Test Accounts
-Role	Permissions	Test Email	Password
-USER	Create requests, view own routes on map	user1@kocaeli.edu.tr	123456
-ADMIN	Manage stations/roads, run optimizations, view history	admin@kocaeli.edu.tr	Admin123
-🚀 Quick Start
-⚠️ Prerequisites: PostgreSQL running · Python 3.x · Node.js 18+ · Windows PowerShell
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@kocaeli.edu.tr` | `Admin123` |
+| User | `user1@kocaeli.edu.tr` | `123456` |
 
-<details> <summary><b>📦 Windows Setup (click to expand)</b></summary>
-Allow script execution
+---
 
-powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
-Install pnpm
+## ✨ Core Features
 
-powershell
+### 📍 Station Management
+
+- District-based delivery stations
+- Latitude / longitude coordinates
+- Active / inactive station control
+- Distribution center selection
+
+### 📦 Cargo Requests
+
+- Destination station
+- Cargo count
+- Total weight in kilograms
+- Target delivery date
+- Status tracking: `PENDING`, `ASSIGNED`, `COMPLETED`
+
+### 🧮 Route Optimization
+
+| Mode | Description |
+|---|---|
+| `UNLIMITED_MIN_COST` | Uses unlimited vehicles and minimizes total delivery cost |
+| `FIXED_3_MAX_CARGO` | Uses exactly 3 vehicles and maximizes delivered cargo |
+
+### 🗺️ Graph-Based Routing
+
+- Stations are represented as graph nodes
+- Roads are represented as weighted edges
+- Shortest paths are calculated using Dijkstra
+- Frequently used paths are cached in the database
+
+---
+
+## 🗄️ Core Database Tables
+
+| Table | Purpose |
+|---|---|
+| `users` | Stores user and admin accounts |
+| `stations` | Stores district stations and coordinates |
+| `cargo_requests` | Stores delivery requests |
+| `station_edges` | Stores road connections and distances |
+| `station_paths_cache` | Stores cached shortest paths |
+| `plans` | Stores route planning results |
+
+---
+
+## 🔌 API Overview
+
+The backend contains **33 REST API endpoints**.
+
+| Group | Endpoint Prefix |
+|---|---|
+| Authentication | `/auth/*` |
+| Stations | `/stations`, `/admin/stations` |
+| Cargo Requests | `/requests`, `/admin/demands` |
+| Graph Operations | `/graph/*` |
+| Planning | `/planning/*` |
+| User Route | `/user/route` |
+| Health Check | `/health` |
+
+---
+
+## 🔐 Security
+
+- JWT authentication
+- Role-based access control
+- Password hashing
+- CORS configuration
+- SQLAlchemy ORM protection
+- Pydantic input validation
+
+---
+
+## ⚡ Performance Optimizations
+
+- Precomputed shortest-path cache
+- Distance matrix generation
+- Active station filtering
+- Indexed database columns
+- Database connection pooling
+
+---
+
+## 🚀 Getting Started
+
+> [!IMPORTANT]  
+> These instructions are written for **Windows PowerShell**.  
+> Backend and frontend must be run in **separate terminals**.
+
+---
+
+## ✅ Prerequisites
+
+Make sure you have installed:
+
+- Python
+- Node.js
+- PostgreSQL
+- Git
+- pnpm
+
+Install pnpm globally if needed:
+
+```powershell
 npm install -g pnpm
-Backend environment
+```
 
-powershell
-cd ".\KOÜ ROTA PLANLAMA\apps\api"
-.\venv\Scripts\activate
-pip install -r requirements.txt
-Frontend dependencies
+---
 
-powershell
-cd ".\KOÜ ROTA PLANLAMA\apps\web"
-pnpm install
-</details>
-🔧 Running the Application
-Terminal 1 – Backend
+## ⚙️ Environment Variables
 
-bash
-# Inside apps\api
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-Health check: http://127.0.0.1:8000/health
+Create a `.env` file inside the backend project and configure it like this:
 
-Terminal 2 – Frontend
-
-bash
-# Inside apps\web
-pnpm dev
-UI: http://localhost:3000
-
-Note: The admin must configure stations, road edges, and the central hub before running any planning. Users see routes only after a plan is executed.
-
-🧠 Planning Modes
-Mode	Behaviour
-UNLIMITED_MIN_COST	No vehicle limit · purely minimize total distance & cost
-FIXED_3_MAX_CARGO	Exactly 3 vehicles · maximize amount of cargo delivered
-🗄️ Database Schema
-Table	Purpose
-users	Authentication & role management
-stations	District coordinates, active flag, centre designation
-cargo_requests	User deliveries with PENDING → ASSIGNED → COMPLETED lifecycle
-station_edges	Road connections and distances
-station_paths_cache	Pre‑computed Dijkstra results for fast queries
-plans	Record of every optimization run
-🔌 API Overview
-33 endpoints across the following prefixes:
-
-Prefix	Responsibility
-/auth/*	JWT login & token management
-/stations	Public station data
-/admin/stations	Station CRUD (admin)
-/requests	User cargo requests
-/admin/demands	Admin view of all requests
-/graph/*	Shortest path and graph queries
-/planning/*	Trigger optimizations, view results
-/user/route	Retrieve assigned route for a user
-/health	Backend health check
-🔐 Security & ⚡ Performance
-Security	Performance
-JWT with role‑based access control	Shortest paths cached in DB
-Password hashing (bcrypt)	Distance matrix pre‑computation
-CORS whitelist	Active‑station filtering
-SQL injection protection (ORM)	Indexed columns on frequent queries
-Pydantic request validation	Connection pooling
-⚙️ Environment Variables
-env
+```env
 DATABASE_URL=postgresql+psycopg2://yazlab3_app:123456@localhost:5432/yazlab3_new
 JWT_SECRET=123456
 CORS_ORIGINS=http://localhost:3000,http://192.168.56.1:3000
 API_HOST=0.0.0.0
 API_PORT=8000
-🎓 Learning Outcomes
-This project showcases real‑world logistics engineering through:
+```
 
-Full‑stack development with FastAPI and Next.js
+> [!NOTE]  
+> PostgreSQL must be running before starting the backend.
 
-REST API design and JWT authentication
+---
 
-Graph algorithms (Dijkstra) and route optimisation
+## 🧩 Installation
 
-Database modelling with SQLAlchemy
+### 1. Allow PowerShell Script Execution
 
-Interactive map visualisation (Leaflet)
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+```
 
-Production‑like setup with caching and performance tuning
+### 2. Install Backend Dependencies
 
+```powershell
+cd ".\KOÜ ROTA PLANLAMA\apps\api"
 
+.\venv\Scripts\activate
 
-</div>
+pip install -r requirements.txt
+```
+
+### 3. Install Frontend Dependencies
+
+```powershell
+cd ".\KOÜ ROTA PLANLAMA\apps\web"
+
+pnpm install
+```
+
+---
+
+## ▶️ Running the Project
+
+### Terminal 1 — Start Backend
+
+```powershell
+cd ".\KOÜ ROTA PLANLAMA\apps\api"
+
+.\venv\Scripts\python.exe -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Backend health check:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+---
+
+### Terminal 2 — Start Frontend
+
+```powershell
+cd ".\KOÜ ROTA PLANLAMA\apps\web"
+
+pnpm dev
+```
+
+Frontend URL:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## 🧪 Quick Workflow
+
+```mermaid
+sequenceDiagram
+    participant Admin
+    participant User
+    participant System
+
+    Admin->>System: Create stations and road edges
+    Admin->>System: Set distribution center
+    User->>System: Create cargo request
+    Admin->>System: Run route optimization
+    System->>System: Calculate shortest paths
+    System->>System: Assign cargo to vehicles
+    User->>System: View assigned route on map
+```
+
+---
+
+## 🎓 Educational Value
+
+This project demonstrates:
+
+- Full-stack web development
+- REST API design
+- Database modeling
+- Authentication and authorization
+- Graph algorithms
+- Route optimization
+- Map-based visualization
+- Real-world logistics problem solving
+
+---
+
+## 📍 Important Notes
+
+> [!WARNING]  
+> The admin must complete the station, edge, and center setup before route planning can be executed.
+
+> [!TIP]  
+> Users can only see delivery routes after an admin runs the planning algorithm.
+
+---
+
+## 📄 License
+
+This project was developed for educational purposes as part of a Kocaeli University Software Laboratory project.
 Here are some Screenshots from the website:
 <img width="1920" height="1024" alt="Screenshot (99)" src="https://github.com/user-attachments/assets/3ca60ffc-3d62-438c-b87f-58beb330fca1" />
 <img width="1920" height="1022" alt="Screenshot (98)" src="https://github.com/user-attachments/assets/a85c7110-14a9-4f53-bebe-4287d1b11fb4" />
@@ -179,6 +331,4 @@ Here are some Screenshots from the website:
 
 
 
-<div align="center">
-Made with ❤️ at Kocaeli University
-Feel free to ⭐ the repo if you find it useful!
+
