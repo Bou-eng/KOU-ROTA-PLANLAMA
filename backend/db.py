@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+psycopg2://yazlab3_app:123456@localhost:5432/yazlab3_new")
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_nwtqy8Kh6DRj@ep-long-frog-a5l25v7x-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require")
 
 engine = create_engine(
     DATABASE_URL,
