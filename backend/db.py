@@ -6,8 +6,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_nwtqy8Kh6DRj@ep-long-frog-a5l25v7x-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
+if not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL must be configured")
+    
 engine = create_engine(
     DATABASE_URL,
     poolclass=NullPool,
