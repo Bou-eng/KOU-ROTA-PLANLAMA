@@ -249,6 +249,14 @@ http://localhost:3000
 
 ---
 
+### Deployed at:
+
+```text
+[http://](https://kou-rota-planlama.vercel.app/)
+```
+
+---
+
 ## 🧪 Quick Workflow
 
 ```mermaid
