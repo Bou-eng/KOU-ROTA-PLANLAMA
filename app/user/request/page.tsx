@@ -267,8 +267,7 @@ export default function CreateRequestPage() {
               <p className="text-cyan-300/80">
                 Oluşturduğunuz talep &quot;Beklemede&quot; durumunda olacaktır.
                 Sistem yöneticisi planlama yaptığında talebiniz otomatik olarak
-                bir rotaya atanacak ve &quot;Planlandı&quot; durumuna
-                geçecektir.
+                bir rotaya atanacak.
               </p>
             </div>
           </div>

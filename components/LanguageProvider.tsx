@@ -233,7 +233,6 @@ const translations: Record<string, string> = {
   "Oluşturduğunuz talep \"Beklemede\" durumunda olacaktır.": "Your request will have a \"Pending\" status.",
   "Sistem yöneticisi planlama yaptığında talebiniz otomatik olarak": "When the system administrator runs planning, your request will automatically",
   "bir rotaya atanacak ve \"Planlandı\" durumuna": "be assigned to a route and change to \"Planned\" status",
-  "geçecektir.": ".",
   "Henüz talebiniz bulunmuyor.": "You do not have any requests yet.",
   "Ağırlık (kg)": "Weight (kg)",
   "talep gösteriliyor": "requests shown",
