@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Space_Grotesk } from "next/font/google";
 import { apiPost } from "@/lib/api";
+import { LanguageToggle } from "@/components/LanguageProvider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -224,6 +225,9 @@ export default function RegisterPage() {
 
       <div className="absolute top-5 left-5 sm:top-8 sm:left-8 z-20">
         <RouteLogo />
+      </div>
+      <div className="absolute top-5 right-5 sm:top-8 sm:right-8 z-20">
+        <LanguageToggle />
       </div>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-md items-center justify-center px-4 py-8">

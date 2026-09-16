@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Space_Grotesk } from "next/font/google";
+import { LanguageToggle, useLanguage } from "@/components/LanguageProvider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -48,7 +49,9 @@ export default function UserLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showMobileNav, setShowMobileNav] = useState(false);
   const [userEmail] = useState(() =>
     typeof window === "undefined"
       ? "kullanici@local"
@@ -90,10 +93,10 @@ export default function UserLayout({
   };
 
   const navLinks = [
-    { href: "/user", label: "Dashboard" },
-    { href: "/user/request", label: "Talep Oluştur" },
-    { href: "/user/requests", label: "Taleplerim" },
-    { href: "/user/route", label: "Rotam" },
+    { href: "/user", label: t("Dashboard") },
+    { href: "/user/request", label: t("Talep Oluştur") },
+    { href: "/user/requests", label: t("Taleplerim") },
+    { href: "/user/route", label: t("Rotam") },
   ];
 
   return (
@@ -103,9 +106,9 @@ export default function UserLayout({
 
       {/* Header */}
       <header className="relative z-20 border-b border-white/10 bg-white/5 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-4 py-4 flex items-center justify-between">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:py-4">
           {/* Logo */}
-          <Link href="/user">
+          <Link href="/user" className="min-w-0">
             <RouteLogo />
           </Link>
 
@@ -130,16 +133,23 @@ export default function UserLayout({
           </nav>
 
           {/* User dropdown */}
-          <div className="relative">
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
+            <button type="button" onClick={() => setShowMobileNav((current) => !current)} className="rounded-lg border border-white/15 bg-white/5 p-2 text-white/80 md:hidden" aria-label="Toggle navigation" aria-expanded={showMobileNav}>
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" /></svg>
+            </button>
+            <div className="relative">
             <button
+              type="button"
+              onClick={() => setShowUserDropdown((current) => !current)}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+              className="flex max-w-[12rem] items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-2 py-2 transition-colors hover:bg-white/10 sm:px-3"
             >
               <div className="h-8 w-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 grid place-items-center text-white text-sm font-semibold">
                 {userEmail.charAt(0).toUpperCase()}
               </div>
-              <span className="text-sm text-white/90">{userEmail}</span>
+              <span className="hidden truncate text-sm text-white/90 sm:block">{userEmail}</span>
               <svg
                 viewBox="0 0 24 24"
                 className="h-4 w-4 text-white/70"
@@ -180,13 +190,25 @@ export default function UserLayout({
                         strokeLinejoin="round"
                       />
                     </svg>
-                    Çıkış Yap
+                    {t("Çıkış Yap")}
                   </div>
                 </button>
               </div>
             )}
+            </div>
           </div>
         </div>
+        {showMobileNav && (
+          <nav className="border-t border-white/10 px-4 py-2 md:hidden">
+            <div className="mx-auto grid max-w-7xl gap-1 sm:grid-cols-2">
+              {navLinks.map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setShowMobileNav(false)} className={`rounded-lg px-3 py-2 text-sm font-medium ${pathname === link.href ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white"}`}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </nav>
+        )}
       </header>
 
       {/* Main content */}
